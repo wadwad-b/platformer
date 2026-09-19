@@ -21,7 +21,7 @@ const API_MENU_ITEM: String = "Wakatime API key"
 const CONFIG_MENU_ITEM: String = "Wakatime Config File"
 
 # Directories to grab wakatime from
-var wakatime_dir = a4421540-f17e-4df1-b85a-46653f8d45f3
+var wakatime_dir = null
 var wakatime_cli = null
 
 var ApiKeyPrompt: PackedScene = preload("res://addons/godot_super-wakatime/api_key_prompt.tscn")
