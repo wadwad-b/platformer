@@ -6,6 +6,9 @@ extends Node
 @onready var camera: Camera2D = $Camera2D
 @onready var score_label: Label = $CanvasLayer/ScoreLabel
 
+@onready var blue_goal: Area2D = $"Blue Goal/GoalDetector"
+@onready var red_goal: Area2D = $"Red Goal/GoalDetector"
+
 @export var edge_padding: float = 150.0
 @export var min_zoom: float = 0.7
 @export var max_zoom: float = 1.5
@@ -22,7 +25,7 @@ var scoring_in_progress: bool = false
 
 
 func _ready() -> void:
-	# Remember the starting positions
+	# Remember starting positions
 	blue_start_position = blue_guy.global_position
 	red_start_position = red_guy.global_position
 	ball_start_position = ball.global_position
@@ -46,33 +49,31 @@ func _process(_delta: float) -> void:
 		red_guy.global_position.x
 	)
 
-	# Get the viewport width
+	# Get viewport width
 	var viewport_width = get_viewport().get_visible_rect().size.x
 
-	# Add padding around the players
+	# Add padding
 	var required_width = player_distance + edge_padding * 2.0
 
-	# Calculate the zoom needed to fit the players
+	# Calculate zoom
 	var required_zoom = viewport_width / required_width
 
-	# Keep zoom within our limits
+	# Keep zoom within limits
 	var current_zoom = clamp(
 		required_zoom,
 		min_zoom,
 		max_zoom
 	)
 
-	# Apply the zoom
 	camera.zoom = Vector2(current_zoom, current_zoom)
 
-	# Calculate how much vertical space is visible
+	# Calculate visible vertical space
 	var viewport_height = get_viewport().get_visible_rect().size.y
 	var visible_height = viewport_height / current_zoom
 
-	# Keep the bottom of the camera at camera_bottom_y
+	# Keep camera bottom at camera_bottom_y
 	var camera_y = camera_bottom_y - visible_height / 2.0
 
-	# Position the camera
 	camera.global_position = Vector2(
 		midpoint_x,
 		camera_y
@@ -104,7 +105,7 @@ func red_scored() -> void:
 
 
 func reset_after_goal() -> void:
-	# Let the ball and players continue moving for 3 seconds
+	# Let physics continue for 3 seconds
 	await get_tree().create_timer(3.0).timeout
 
 	# Reset Blue Guy
@@ -119,8 +120,8 @@ func reset_after_goal() -> void:
 	ball.reset_ball(ball_start_position)
 
 	# Reset both goals
-	for goal in get_tree().get_nodes_in_group("goals"):
-		goal.reset_goal()
+	blue_goal.reset_goal()
+	red_goal.reset_goal()
 
 	# Allow another goal
 	scoring_in_progress = false
