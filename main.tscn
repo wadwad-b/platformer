@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bnvcbvp7hfxb2" path="res://assets/sky.png" id="14_w48qg"]
 [ext_resource type="Texture2D" uid="uid://bofw2ifb08qo4" path="res://assets/goal.png" id="16_2cqfq"]
 [ext_resource type="Script" uid="uid://dws5wkkxojbmc" path="res://scripts/goal.gd" id="17_yaehf"]
+[ext_resource type="AudioStream" uid="uid://byg603gmxbpsy" path="res://assets/audio/whatdoyousee-song.mp3" id="18_074og"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4c57u"]
 atlas = ExtResource("2_7mycd")
@@ -154,7 +155,6 @@ size = Vector2(10.765625, 412.8487)
 
 [node name="Node" type="Node" unique_id=183694130]
 script = ExtResource("1_272bh")
-min_zoom = 0.25
 
 [node name="Blue Guy" type="CharacterBody2D" parent="." unique_id=2057915829]
 position = Vector2(-2500, 838)
@@ -376,6 +376,13 @@ polygon = PackedVector2Array(-138, 273, -134, 36, -20, 273)
 position = Vector2(2, 129)
 texture = ExtResource("16_2cqfq")
 flip_h = true
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=1992747488]
+stream = ExtResource("18_074og")
+autoplay = true
+max_distance = 5000.0
+attenuation = 1.0789665e-05
+parameters/looping = true
 
 [connection signal="body_entered" from="Ball/Hitbox" to="Ball" method="_on_hitbox_body_entered"]
 [connection signal="body_entered" from="Blue Goal/GoalDetector" to="Blue Goal/GoalDetector" method="_on_body_entered"]

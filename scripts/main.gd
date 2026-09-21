@@ -9,8 +9,8 @@ extends Node
 @onready var blue_goal: Area2D = $"Blue Goal/GoalDetector"
 @onready var red_goal: Area2D = $"Red Goal/GoalDetector"
 
-@export var edge_padding: float = 150.0
-@export var min_zoom: float = 0.7
+@export var edge_padding: float = 300.0
+@export var min_zoom: float = 0.25
 @export var max_zoom: float = 1.5
 @export var camera_bottom_y: float = 1080.0
 
@@ -23,8 +23,15 @@ var ball_start_position: Vector2
 
 var scoring_in_progress: bool = false
 
+var goal_sound: AudioStreamPlayer
+
 
 func _ready() -> void:
+	# Create goal sound player
+	goal_sound = AudioStreamPlayer.new()
+	goal_sound.stream = load("res://assets/audio/wow.mp3")
+	add_child(goal_sound)
+
 	# Remember starting positions
 	blue_start_position = blue_guy.global_position
 	red_start_position = red_guy.global_position
@@ -37,28 +44,22 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	# Find the horizontal midpoint between the players
 	var midpoint_x = (
 		blue_guy.global_position.x +
 		red_guy.global_position.x
 	) / 2.0
 
-	# Find the horizontal distance between the players
 	var player_distance = abs(
 		blue_guy.global_position.x -
 		red_guy.global_position.x
 	)
 
-	# Get viewport width
 	var viewport_width = get_viewport().get_visible_rect().size.x
 
-	# Add padding
 	var required_width = player_distance + edge_padding * 2.0
 
-	# Calculate zoom
 	var required_zoom = viewport_width / required_width
 
-	# Keep zoom within limits
 	var current_zoom = clamp(
 		required_zoom,
 		min_zoom,
@@ -67,11 +68,9 @@ func _process(_delta: float) -> void:
 
 	camera.zoom = Vector2(current_zoom, current_zoom)
 
-	# Calculate visible vertical space
 	var viewport_height = get_viewport().get_visible_rect().size.y
 	var visible_height = viewport_height / current_zoom
 
-	# Keep camera bottom at camera_bottom_y
 	var camera_y = camera_bottom_y - visible_height / 2.0
 
 	camera.global_position = Vector2(
@@ -89,6 +88,8 @@ func blue_scored() -> void:
 	blue_score += 1
 	update_scoreboard()
 
+	goal_sound.play()
+
 	await reset_after_goal()
 
 
@@ -100,6 +101,8 @@ func red_scored() -> void:
 
 	red_score += 1
 	update_scoreboard()
+
+	goal_sound.play()
 
 	await reset_after_goal()
 
