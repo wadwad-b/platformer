@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3hqo3lf71oti"
-path="res://.godot/imported/New Piskel.png-4b57200a9b5d4d6f89cce1bdbbdb2eec.ctex"
+uid="uid://caso2upuk5okl"
+path="res://.godot/imported/dark-ghost.png-4253c53c4ea439f9288b48eb8e2b1022.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://New Piskel.png"
-dest_files=["res://.godot/imported/New Piskel.png-4b57200a9b5d4d6f89cce1bdbbdb2eec.ctex"]
+source_file="res://assets/dark-ghost.png"
+dest_files=["res://.godot/imported/dark-ghost.png-4253c53c4ea439f9288b48eb8e2b1022.ctex"]
 
 [params]
 
